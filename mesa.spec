@@ -78,7 +78,6 @@ BuildRequires:  pkgconfig(vulkan)
 %package filesystem
 Summary:        Mesa driver filesystem
 Provides:       mesa-dri-filesystem = %{?epoch:%{epoch}:}%{version}-%{release}
-Obsoletes:      mesa-dri-filesystem < %{?epoch:%{epoch}:}%{version}-%{release}
 
 %description filesystem
 %{summary}.
@@ -136,11 +135,12 @@ Requires:       %{name}-filesystem%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{rel
 %description omx-drivers
 %{summary}.
 
-%package        vaapi-drivers
-Summary:        Mesa-based VAAPI drivers
+%package        va-drivers
+Summary:        Mesa-based VA-API video acceleration drivers
 Requires:       %{name}-filesystem%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+Obsoletes:      %{name}-vaapi-drivers < 22.2.0-3
 
-%description vaapi-drivers
+%description va-drivers
 %{summary}.
 
 %package        vdpau-drivers
@@ -230,7 +230,7 @@ cp %{SOURCE1} docs/
   -Degl=enabled \
   -Dglvnd=true \
   -Dmicrosoft-clc=disabled \
-  -Dllvm=enabled \
+  -Dllvm=disabled \
   -Dshared-llvm=enabled \
   -Dvalgrind=%{?with_valgrind:enabled}%{!?with_valgrind:disabled} \
   -Dbuild-tests=false \
@@ -315,7 +315,7 @@ popd
 %files omx-drivers
 %{_libdir}/bellagio/libomx_mesa.so
 
-%files vaapi-drivers
+%files va-drivers
 %{_libdir}/dri/radeonsi_drv_video.so
 
 %files vdpau-drivers
