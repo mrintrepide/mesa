@@ -59,7 +59,6 @@ BuildRequires:  bison
 BuildRequires:  flex
 BuildRequires:  pkgconfig(vdpau) >= 1.1
 BuildRequires:  pkgconfig(libva) >= 0.38.0
-BuildRequires:  pkgconfig(libomxil-bellagio)
 BuildRequires:  pkgconfig(libelf)
 BuildRequires:  pkgconfig(libglvnd) >= 1.3.2
 BuildRequires:  llvm-devel >= 7.0.0
@@ -126,13 +125,6 @@ Summary:        Mesa-based DRI drivers
 Requires:       %{name}-filesystem%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
 
 %description dri-drivers
-%{summary}.
-
-%package omx-drivers
-Summary:        Mesa-based OMX drivers
-Requires:       %{name}-filesystem%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
-
-%description omx-drivers
 %{summary}.
 
 %package        va-drivers
@@ -213,7 +205,7 @@ cp %{SOURCE1} docs/
   -Dgallium-drivers=swrast,radeonsi,zink \
   -Dgallium-vdpau=enabled \
   -Dgallium-xvmc=disabled \
-  -Dgallium-omx=bellagio \
+  -Dgallium-omx=disabled \
   -Dgallium-va=enabled \
   -Dgallium-xa=disabled \
   -Dgallium-nine=false \
@@ -311,9 +303,6 @@ popd
 %{_libdir}/dri/radeonsi_dri.so
 
 %{_libdir}/dri/zink_dri.so
-
-%files omx-drivers
-%{_libdir}/bellagio/libomx_mesa.so
 
 %files va-drivers
 %{_libdir}/dri/radeonsi_drv_video.so
