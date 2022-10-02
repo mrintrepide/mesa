@@ -2,7 +2,7 @@ Name:           mesa
 Summary:        Mesa graphics libraries
 %global ver 22.2.0
 Version:        %{lua:ver = string.gsub(rpm.expand("%{ver}"), "-", "~"); print(ver)}
-Release:        2
+Release:        3
 License:        MIT
 URL:            http://www.mesa3d.org
 
@@ -223,7 +223,7 @@ cp %{SOURCE1} docs/
   -Dplatforms=x11,wayland \
   -Ddri3=enabled \
   -Dosmesa=true \
-  -Dgallium-drivers=swrast,virgl,radeonsi,zink \
+  -Dgallium-drivers=radeonsi,zink \
   -Dgallium-vdpau=enabled \
   -Dgallium-xvmc=disabled \
   -Dgallium-omx=bellagio \
@@ -231,7 +231,7 @@ cp %{SOURCE1} docs/
   -Dgallium-xa=disabled \
   -Dgallium-nine=true \
   -Dgallium-opencl=disabled \
-  -Dvulkan-drivers=swrast,amd \
+  -Dvulkan-drivers=amd \
   -Dvulkan-layers=device-select \
   -Dvideo-codecs=h264dec,h264enc,h265dec,h265enc,vc1dec \
   -Dshared-glapi=enabled \
@@ -327,9 +327,6 @@ popd
 %files dri-drivers
 %dir %{_datadir}/drirc.d
 %{_datadir}/drirc.d/00-mesa-defaults.conf
-%{_libdir}/dri/kms_swrast_dri.so
-%{_libdir}/dri/swrast_dri.so
-%{_libdir}/dri/virtio_gpu_dri.so
 
 %{_libdir}/dri/radeonsi_dri.so
 
