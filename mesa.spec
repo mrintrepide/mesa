@@ -2,7 +2,7 @@ Name:           mesa
 Summary:        Mesa graphics libraries
 %global ver 22.2.0
 Version:        %{lua:ver = string.gsub(rpm.expand("%{ver}"), "-", "~"); print(ver)}
-Release:        4
+Release:        5
 License:        MIT
 URL:            http://www.mesa3d.org
 
@@ -55,6 +55,7 @@ BuildRequires:  pkgconfig(glproto) >= 1.4.14
 BuildRequires:  pkgconfig(xcb-xfixes)
 BuildRequires:  pkgconfig(xcb-randr)
 BuildRequires:  pkgconfig(xrandr) >= 1.3
+BuildRequires:	pkgconfig(libunwind)
 BuildRequires:  bison
 BuildRequires:  flex
 BuildRequires:  pkgconfig(vdpau) >= 1.1
@@ -130,7 +131,7 @@ Requires:       %{name}-filesystem%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{rel
 %package        va-drivers
 Summary:        Mesa-based VA-API video acceleration drivers
 Requires:       %{name}-filesystem%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
-Obsoletes:      %{name}-vaapi-drivers < 22.2.0-3
+Obsoletes:      %{name}-vaapi-drivers < %{?epoch:%{epoch}:}%{version}-%{release}
 
 %description va-drivers
 %{summary}.
@@ -219,11 +220,12 @@ cp %{SOURCE1} docs/
   -Dopengl=true \
   -Dgbm=enabled \
   -Dglx=dri \
+  -Dlibunwind=enabled \
   -Degl=enabled \
   -Dglvnd=true \
   -Dmicrosoft-clc=disabled \
   -Dllvm=enabled \
-  -Dshared-llvm=disabled \
+  -Dshared-llvm=enabled \
   -Dvalgrind=%{?with_valgrind:enabled}%{!?with_valgrind:disabled} \
   -Dbuild-tests=false \
   -Dselinux=true \
