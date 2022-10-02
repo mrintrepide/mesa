@@ -192,19 +192,6 @@ Provides:       libglapi%{?_isa}
 %description libglapi
 %{summary}.
 
-%package libd3d
-Summary:        Mesa Direct3D9 state tracker
-
-%description libd3d
-%{summary}.
-
-%package libd3d-devel
-Summary:        Mesa Direct3D9 state tracker development package
-Requires:       %{name}-libd3d%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
-
-%description libd3d-devel
-%{summary}.
-
 %package vulkan-drivers
 Summary:        Mesa Vulkan drivers
 Requires:       vulkan%{_isa}
@@ -223,15 +210,15 @@ cp %{SOURCE1} docs/
   -Dplatforms=x11,wayland \
   -Ddri3=enabled \
   -Dosmesa=true \
-  -Dgallium-drivers=radeonsi,zink \
+  -Dgallium-drivers=swrast,radeonsi,zink \
   -Dgallium-vdpau=enabled \
   -Dgallium-xvmc=disabled \
   -Dgallium-omx=bellagio \
   -Dgallium-va=enabled \
   -Dgallium-xa=disabled \
-  -Dgallium-nine=true \
+  -Dgallium-nine=false \
   -Dgallium-opencl=disabled \
-  -Dvulkan-drivers=amd \
+  -Dvulkan-drivers=swrast,amd \
   -Dvulkan-layers=device-select \
   -Dvideo-codecs=h264dec,h264enc,h265dec,h265enc,vc1dec \
   -Dshared-glapi=enabled \
@@ -315,18 +302,11 @@ popd
 %{_includedir}/gbm.h
 %{_libdir}/pkgconfig/gbm.pc
 
-%files libd3d
-%dir %{_libdir}/d3d/
-%{_libdir}/d3d/*.so.*
-
-%files libd3d-devel
-%{_libdir}/pkgconfig/d3d.pc
-%{_includedir}/d3dadapter/
-%{_libdir}/d3d/*.so
-
 %files dri-drivers
 %dir %{_datadir}/drirc.d
 %{_datadir}/drirc.d/00-mesa-defaults.conf
+%{_libdir}/dri/kms_swrast_dri.so
+%{_libdir}/dri/swrast_dri.so
 
 %{_libdir}/dri/radeonsi_dri.so
 
