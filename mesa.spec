@@ -230,8 +230,8 @@ cp %{SOURCE1} docs/
   -Degl=enabled \
   -Dglvnd=true \
   -Dmicrosoft-clc=disabled \
-  -Dllvm=disabled \
-  -Dshared-llvm=enabled \
+  -Dllvm=enabled \
+  -Dshared-llvm=disabled \
   -Dvalgrind=%{?with_valgrind:enabled}%{!?with_valgrind:disabled} \
   -Dbuild-tests=false \
   -Dselinux=true \
