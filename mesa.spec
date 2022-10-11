@@ -36,6 +36,8 @@
 
 %global vulkan_drivers swrast%{?base_vulkan}%{?platform_vulkan}
 
+%global debug_package %{nil}
+
 Name:           mesa
 Summary:        Mesa graphics libraries
 %global ver 22.2.0
