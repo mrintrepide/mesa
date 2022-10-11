@@ -19,21 +19,6 @@
 %global platform_vulkan ,intel
 %endif
 
-%ifarch aarch64
-%if !0%{?rhel}
-%global with_etnaviv   1
-%global with_lima      1
-%global with_vc4       1
-%global with_v3d       1
-%endif
-%global with_freedreno 1
-%global with_kmsro     1
-%global with_panfrost  1
-%global with_tegra     1
-%global with_xa        1
-%global platform_vulkan ,broadcom,freedreno,panfrost
-%endif
-
 %ifnarch s390x
 %if !0%{?rhel}
 %global with_r300 1
@@ -64,20 +49,6 @@ Source0:        https://archive.mesa3d.org/mesa-%{ver}.tar.xz
 # Source1 contains email correspondence clarifying the license terms.
 # Fedora opts to ignore the optional part of clause 2 and treat that code as 2 clause BSD.
 Source1:        Mesa-MLAA-License-Clarification-Email.txt
-
-# Patches from Karol Herbst to make Tegra work again:
-# https://bugzilla.redhat.com/show_bug.cgi?id=1989726#c46
-# see also:
-# https://gitlab.freedesktop.org/mesa/mesa/-/issues/5399
-# Last four revert https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/3724
-Patch0005: 0003-Revert-nouveau-Use-format-modifiers-in-buffer-alloca.patch
-Patch0006: 0004-Revert-nouveau-no-modifier-the-invalid-modifier.patch
-Patch0007: 0005-Revert-nouveau-Use-DRM_FORMAT_MOD_NVIDIA_BLOCK_LINEA.patch
-Patch0008: 0006-Revert-nouveau-Stash-supported-sector-layout-in-scre.patch
-
-# Patches from Karol Herbst to fix Nouveau multithreading:
-# https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/10752
-Patch0009: nouveau-multithreading-fixes.patch
 
 BuildRequires:  meson >= 0.45
 BuildRequires:  gcc
@@ -116,6 +87,7 @@ BuildRequires:  pkgconfig(glproto) >= 1.4.14
 BuildRequires:  pkgconfig(xcb-xfixes)
 BuildRequires:  pkgconfig(xcb-randr)
 BuildRequires:  pkgconfig(xrandr) >= 1.3
+BuildRequires:	pkgconfig(libunwind)
 BuildRequires:  bison
 BuildRequires:  flex
 %if 0%{?with_vdpau}
