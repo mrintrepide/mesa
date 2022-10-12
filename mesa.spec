@@ -19,6 +19,21 @@
 %global platform_vulkan ,intel
 %endif
 
+%ifarch aarch64
+%if !0%{?rhel}
+%global with_etnaviv   1
+%global with_lima      1
+%global with_vc4       1
+%global with_v3d       1
+%endif
+%global with_freedreno 1
+%global with_kmsro     1
+%global with_panfrost  1
+%global with_tegra     1
+%global with_xa        1
+%global platform_vulkan ,broadcom,freedreno,panfrost
+%endif
+
 %ifnarch s390x
 %if !0%{?rhel}
 %global with_r300 1
@@ -42,7 +57,7 @@ Name:           mesa
 Summary:        Mesa graphics libraries
 %global ver 22.2.1
 Version:        %{lua:ver = string.gsub(rpm.expand("%{ver}"), "-", "~"); print(ver)}
-Release:        1
+Release:        2
 License:        MIT
 URL:            http://www.mesa3d.org
 
@@ -89,7 +104,6 @@ BuildRequires:  pkgconfig(glproto) >= 1.4.14
 BuildRequires:  pkgconfig(xcb-xfixes)
 BuildRequires:  pkgconfig(xcb-randr)
 BuildRequires:  pkgconfig(xrandr) >= 1.3
-BuildRequires:	pkgconfig(libunwind)
 BuildRequires:  bison
 BuildRequires:  flex
 %if 0%{?with_vdpau}
@@ -340,7 +354,6 @@ cp %{SOURCE1} docs/
   -Dopengl=true \
   -Dgbm=enabled \
   -Dglx=dri \
-  -Dlibunwind=enabled \
   -Degl=enabled \
   -Dglvnd=true \
   -Dmicrosoft-clc=disabled \
