@@ -256,7 +256,7 @@ cp %{SOURCE1} docs/
   -Dgallium-drivers=swrast,virgl,r300,crocus,i915,iris,radeonsi,r600,zink \
   -Dgallium-vdpau=enabled \
   -Dgallium-xvmc=disabled \
-  -Dgallium-omx=enabled \
+  -Dgallium-omx=bellagio \
   -Dgallium-va=enabled \
   -Dgallium-xa=enabled \
   -Dgallium-nine=enabled \
