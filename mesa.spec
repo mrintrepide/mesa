@@ -2,15 +2,9 @@ Name:           mesa
 Summary:        Mesa graphics libraries
 %global ver 22.2.1
 Version:        %{lua:ver = string.gsub(rpm.expand("%{ver}"), "-", "~"); print(ver)}
-Release:        2
+Release:        3
 License:        MIT
 URL:            http://www.mesa3d.org
-
-%ifarch %{valgrind_arches}
-%bcond_without valgrind
-%else
-%bcond_with valgrind
-%endif
 
 %global debug_package %{nil}
 
@@ -60,9 +54,12 @@ BuildRequires:  bison
 BuildRequires:  flex
 BuildRequires:  pkgconfig(vdpau) >= 1.1
 BuildRequires:  pkgconfig(libva) >= 0.38.0
+BuildRequires:  pkgconfig(libomxil-bellagio)
 BuildRequires:  pkgconfig(libelf)
 BuildRequires:  pkgconfig(libglvnd) >= 1.3.2
 BuildRequires:  llvm-devel >= 7.0.0
+BuildRequires:  clang-devel
+BuildRequires:  pkgconfig(libclc)
 BuildRequires:  pkgconfig(valgrind)
 BuildRequires:  python3-devel
 BuildRequires:  python3-mako
@@ -127,10 +124,17 @@ Recommends:     %{name}-va-drivers%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{rel
 %description dri-drivers
 %{summary}.
 
+%package omx-drivers
+Summary:        Mesa-based OMX drivers
+Requires:       %{name}-filesystem%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+
+%description omx-drivers
+%{summary}.
+
 %package        va-drivers
 Summary:        Mesa-based VA-API video acceleration drivers
 Requires:       %{name}-filesystem%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
-Obsoletes:      %{name}-vaapi-drivers < %{?epoch:%{epoch}:}%{version}-%{release}
+Obsoletes:      %{name}-vaapi-drivers < 22.2.0-5
 
 %description va-drivers
 %{summary}.
@@ -176,12 +180,59 @@ Provides:       libgbm-devel%{?_isa}
 %description libgbm-devel
 %{summary}.
 
+%package libxatracker
+Summary:        Mesa XA state tracker
+Provides:       libxatracker
+Provides:       libxatracker%{?_isa}
+
+%description libxatracker
+%{summary}.
+
+%package libxatracker-devel
+Summary:        Mesa XA state tracker development package
+Requires:       %{name}-libxatracker%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+Provides:       libxatracker-devel
+Provides:       libxatracker-devel%{?_isa}
+
+%description libxatracker-devel
+%{summary}.
+
 %package libglapi
 Summary:        Mesa shared glapi
 Provides:       libglapi
 Provides:       libglapi%{?_isa}
 
 %description libglapi
+%{summary}.
+
+%package libOpenCL
+Summary:        Mesa OpenCL runtime library
+Requires:       ocl-icd%{?_isa}
+Requires:       libclc%{?_isa}
+Requires:       %{name}-libgbm%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+Requires:       opencl-filesystem
+
+%description libOpenCL
+%{summary}.
+
+%package libOpenCL-devel
+Summary:        Mesa OpenCL development package
+Requires:       %{name}-libOpenCL%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+
+%description libOpenCL-devel
+%{summary}.
+
+%package libd3d
+Summary:        Mesa Direct3D9 state tracker
+
+%description libd3d
+%{summary}.
+
+%package libd3d-devel
+Summary:        Mesa Direct3D9 state tracker development package
+Requires:       %{name}-libd3d%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+
+%description libd3d-devel
 %{summary}.
 
 %package vulkan-drivers
@@ -202,15 +253,15 @@ cp %{SOURCE1} docs/
   -Dplatforms=x11,wayland \
   -Ddri3=enabled \
   -Dosmesa=true \
-  -Dgallium-drivers=swrast,radeonsi,zink \
+  -Dgallium-drivers=swrast,virgl,r300,crocus,i915,iris,radeonsi,r600,zink \
   -Dgallium-vdpau=enabled \
   -Dgallium-xvmc=disabled \
-  -Dgallium-omx=disabled \
+  -Dgallium-omx=enabled \
   -Dgallium-va=enabled \
-  -Dgallium-xa=disabled \
-  -Dgallium-nine=false \
-  -Dgallium-opencl=disabled \
-  -Dvulkan-drivers=swrast,amd \
+  -Dgallium-xa=enabled \
+  -Dgallium-nine=enabled \
+  -Dgallium-opencl=enabled \
+  -Dvulkan-drivers=swrast,amd,intel \
   -Dvulkan-layers=device-select \
   -Dvideo-codecs=h264dec,h264enc,h265dec,h265enc,vc1dec \
   -Dshared-glapi=enabled \
@@ -225,7 +276,7 @@ cp %{SOURCE1} docs/
   -Dmicrosoft-clc=disabled \
   -Dllvm=enabled \
   -Dshared-llvm=enabled \
-  -Dvalgrind=%{?with_valgrind:enabled}%{!?with_valgrind:disabled} \
+  -Dvalgrind=enabled \
   -Dbuild-tests=false \
   -Dselinux=true \
   %{nil}
@@ -295,20 +346,62 @@ popd
 %{_includedir}/gbm.h
 %{_libdir}/pkgconfig/gbm.pc
 
+%files libxatracker
+%{_libdir}/libxatracker.so.2
+%{_libdir}/libxatracker.so.2.*
+
+%files libxatracker-devel
+%{_libdir}/libxatracker.so
+%{_includedir}/xa_tracker.h
+%{_includedir}/xa_composite.h
+%{_includedir}/xa_context.h
+%{_libdir}/pkgconfig/xatracker.pc
+
+%files libOpenCL
+%{_libdir}/libMesaOpenCL.so.*
+%{_sysconfdir}/OpenCL/vendors/mesa.icd
+%files libOpenCL-devel
+%{_libdir}/libMesaOpenCL.so
+
+%files libd3d
+%dir %{_libdir}/d3d/
+%{_libdir}/d3d/*.so.*
+
+%files libd3d-devel
+%{_libdir}/pkgconfig/d3d.pc
+%{_includedir}/d3dadapter/
+%{_libdir}/d3d/*.so
+
 %files dri-drivers
 %dir %{_datadir}/drirc.d
 %{_datadir}/drirc.d/00-mesa-defaults.conf
 %{_libdir}/dri/kms_swrast_dri.so
 %{_libdir}/dri/swrast_dri.so
+%{_libdir}/dri/virtio_gpu_dri.so
 
+%{_libdir}/dri/r300_dri.so
+%{_libdir}/dri/r600_dri.so
 %{_libdir}/dri/radeonsi_dri.so
+
+%{_libdir}/dri/crocus_dri.so
+%{_libdir}/dri/i915_dri.so
+%{_libdir}/dri/iris_dri.so
+
+%dir %{_libdir}/gallium-pipe
+%{_libdir}/gallium-pipe/*.so
 
 %{_libdir}/dri/zink_dri.so
 
+%files omx-drivers
+%{_libdir}/bellagio/libomx_mesa.so
+
 %files va-drivers
+%{_libdir}/dri/r600_drv_video.so
 %{_libdir}/dri/radeonsi_drv_video.so
 
 %files vdpau-drivers
+%{_libdir}/vdpau/libvdpau_r300.so.1*
+%{_libdir}/vdpau/libvdpau_r600.so.1*
 %{_libdir}/vdpau/libvdpau_radeonsi.so.1*
 
 %files vulkan-drivers
@@ -319,6 +412,8 @@ popd
 %{_libdir}/libvulkan_radeon.so
 %{_datadir}/drirc.d/00-radv-defaults.conf
 %{_datadir}/vulkan/icd.d/radeon_icd.*.json
+%{_libdir}/libvulkan_intel.so
+%{_datadir}/vulkan/icd.d/intel_icd.*.json
 
 %changelog
 %autochangelog
