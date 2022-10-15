@@ -51,11 +51,14 @@
 
 %global vulkan_drivers swrast%{?base_vulkan}%{?platform_vulkan}
 
+%global debug_package %{nil}
+%__cflags_arch_x86_64 -march=x86-64-v3
+
 Name:           mesa
 Summary:        Mesa graphics libraries
 %global ver 22.2.1
 Version:        %{lua:ver = string.gsub(rpm.expand("%{ver}"), "-", "~"); print(ver)}
-Release:        3
+Release:        4
 License:        MIT
 URL:            http://www.mesa3d.org
 
