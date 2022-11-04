@@ -413,8 +413,7 @@ popd
 %{_libdir}/libEGL_mesa.so.0*
 %files libEGL-devel
 %dir %{_includedir}/EGL
-%{_includedir}/EGL/eglmesaext.h
-%{_includedir}/EGL/eglextchromium.h
+%{_includedir}/EGL/*.h
 
 %files libglapi
 %{_libdir}/libglapi.so.0
