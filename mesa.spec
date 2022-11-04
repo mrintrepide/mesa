@@ -477,6 +477,7 @@ popd
 %{_libdir}/dri/kms_swrast_dri.so
 %{_libdir}/dri/swrast_dri.so
 %{_libdir}/dri/virtio_gpu_dri.so
+%{_libdir}/dri/virtio_gpu_drv_video.so
 
 %if 0%{?with_hardware}
 %if 0%{?with_r300}
@@ -576,6 +577,7 @@ popd
 %if 0%{?with_vdpau}
 %files vdpau-drivers
 %{_libdir}/vdpau/libvdpau_nouveau.so.1*
+%{_libdir}/vdpau/libvdpau_virtio_gpu.so.1*
 %if 0%{?with_r300}
 %{_libdir}/vdpau/libvdpau_r300.so.1*
 %endif
