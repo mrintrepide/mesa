@@ -107,6 +107,7 @@ BuildRequires:	pkgconfig(LLVMSPIRVLib)
 BuildRequires:	rust
 BuildRequires:	rust-bindgen-devel
 BuildRequires:	spirv-tools-devel
+BuildRequires:	bindgen
 BuildRequires:  bison
 BuildRequires:  flex
 %if 0%{?with_vdpau}
