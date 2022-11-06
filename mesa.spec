@@ -105,6 +105,7 @@ BuildRequires:  pkgconfig(xrandr) >= 1.3
 BuildRequires:	pkgconfig(libunwind)
 BuildRequires:	rust
 BuildRequires:	rust-bindgen-devel
+BuildRequires:	spirv-tools
 BuildRequires:  bison
 BuildRequires:  flex
 %if 0%{?with_vdpau}
