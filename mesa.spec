@@ -104,9 +104,9 @@ BuildRequires:  pkgconfig(xcb-randr)
 BuildRequires:  pkgconfig(xrandr) >= 1.3
 BuildRequires:	pkgconfig(libunwind)
 BuildRequires:	pkgconfig(LLVMSPIRVLib)
+BuildRequires:	pkgconfig(SPIRV-Tools)
 BuildRequires:	rust
 BuildRequires:	rust-bindgen-devel
-BuildRequires:	spirv-tools-devel
 BuildRequires:	bindgen
 BuildRequires:  bison
 BuildRequires:  flex
