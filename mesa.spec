@@ -103,6 +103,8 @@ BuildRequires:  pkgconfig(xcb-xfixes)
 BuildRequires:  pkgconfig(xcb-randr)
 BuildRequires:  pkgconfig(xrandr) >= 1.3
 BuildRequires:	pkgconfig(libunwind)
+BuildRequires:	pkgconfig(rust)
+BuildRequires:	pkgconfig(rust-bindgen)
 BuildRequires:  bison
 BuildRequires:  flex
 %if 0%{?with_vdpau}
@@ -333,6 +335,7 @@ cp %{SOURCE1} docs/
 %define _lto_cflags %{nil}
 
 %meson \
+  -Db_ndebug=true \
   -Dplatforms=x11,wayland \
   -Ddri3=enabled \
   -Dosmesa=true \
@@ -347,6 +350,7 @@ cp %{SOURCE1} docs/
   -Dgallium-xa=%{?with_xa:enabled}%{!?with_xa:disabled} \
   -Dgallium-nine=%{?with_nine:true}%{!?with_nine:false} \
   -Dgallium-opencl=%{?with_opencl:icd}%{!?with_opencl:disabled} \
+  -Dgallium-rusticl=true \
   -Dvulkan-drivers=%{?vulkan_drivers} \
   -Dvulkan-layers=device-select \
   -Dvideo-codecs=h264dec,h264enc,h265dec,h265enc,vc1dec \
@@ -365,6 +369,7 @@ cp %{SOURCE1} docs/
   -Dvalgrind=%{?with_valgrind:enabled}%{!?with_valgrind:disabled} \
   -Dbuild-tests=false \
   -Dselinux=true \
+  -Drust_std=2021 \
   %{nil}
 %meson_build
 
