@@ -103,6 +103,7 @@ BuildRequires:  pkgconfig(xcb-xfixes)
 BuildRequires:  pkgconfig(xcb-randr)
 BuildRequires:  pkgconfig(xrandr) >= 1.3
 BuildRequires:	pkgconfig(libunwind)
+BuildRequires:	pkgconfig(LLVMSPIRVLib)
 BuildRequires:	rust
 BuildRequires:	rust-bindgen-devel
 BuildRequires:	spirv-tools-devel
