@@ -103,11 +103,6 @@ BuildRequires:  pkgconfig(xcb-xfixes)
 BuildRequires:  pkgconfig(xcb-randr)
 BuildRequires:  pkgconfig(xrandr) >= 1.3
 BuildRequires:	pkgconfig(libunwind)
-BuildRequires:	pkgconfig(LLVMSPIRVLib)
-BuildRequires:	pkgconfig(SPIRV-Tools)
-BuildRequires:	rust
-BuildRequires:	rust-bindgen-devel
-BuildRequires:	bindgen
 BuildRequires:  bison
 BuildRequires:  flex
 %if 0%{?with_vdpau}
@@ -304,16 +299,6 @@ Requires:       %{name}-libOpenCL%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{rele
 %{summary}.
 %endif
 
-%package libRusticlOpenCL
-Summary:        Mesa Rusticl OpenCL runtime library
-Requires:       ocl-icd%{?_isa}
-Requires:       libclc%{?_isa}
-Requires:       %{name}-libgbm%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
-Requires:       opencl-filesystem
-
-%description libRusticlOpenCL
-%{summary}.
-
 %if 0%{?with_nine}
 %package libd3d
 Summary:        Mesa Direct3D9 state tracker
@@ -362,7 +347,6 @@ cp %{SOURCE1} docs/
   -Dgallium-xa=%{?with_xa:enabled}%{!?with_xa:disabled} \
   -Dgallium-nine=%{?with_nine:true}%{!?with_nine:false} \
   -Dgallium-opencl=%{?with_opencl:icd}%{!?with_opencl:disabled} \
-  -Dgallium-rusticl=true \
   -Dvulkan-drivers=%{?vulkan_drivers} \
   -Dvulkan-layers=device-select \
   -Dvideo-codecs=h264dec,h264enc,h265dec,h265enc,vc1dec \
@@ -381,7 +365,6 @@ cp %{SOURCE1} docs/
   -Dvalgrind=%{?with_valgrind:enabled}%{!?with_valgrind:disabled} \
   -Dbuild-tests=false \
   -Dselinux=true \
-  -Drust_std=2021 \
   %{nil}
 %meson_build
 
@@ -476,10 +459,6 @@ popd
 %files libOpenCL-devel
 %{_libdir}/libMesaOpenCL.so
 %endif
-
-%files libRusticlOpenCL
-%{_libdir}/libRusticlOpenCL.so*
-%{_sysconfdir}/OpenCL/vendors/rusticl.icd
 
 %if 0%{?with_nine}
 %files libd3d
