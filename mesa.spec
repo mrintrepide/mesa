@@ -348,7 +348,6 @@ cp %{SOURCE1} docs/
 %define _lto_cflags %{nil}
 
 %meson \
-  -Db_ndebug=true \
   -Dplatforms=x11,wayland \
   -Ddri3=enabled \
   -Dosmesa=true \
@@ -479,7 +478,7 @@ popd
 %endif
 
 %files libRusticlOpenCL
-%{_libdir}/libRusticlOpenCL.so.*
+%{_libdir}/libRusticlOpenCL.so*
 %{_sysconfdir}/OpenCL/vendors/rusticl.icd
 
 %if 0%{?with_nine}
