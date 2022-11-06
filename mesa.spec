@@ -304,6 +304,16 @@ Requires:       %{name}-libOpenCL%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{rele
 %{summary}.
 %endif
 
+%package libRusticlOpenCL
+Summary:        Mesa Rusticl OpenCL runtime library
+Requires:       ocl-icd%{?_isa}
+Requires:       libclc%{?_isa}
+Requires:       %{name}-libgbm%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+Requires:       opencl-filesystem
+
+%description libRusticlOpenCL
+%{summary}.
+
 %if 0%{?with_nine}
 %package libd3d
 Summary:        Mesa Direct3D9 state tracker
@@ -467,6 +477,10 @@ popd
 %files libOpenCL-devel
 %{_libdir}/libMesaOpenCL.so
 %endif
+
+%files libRusticlOpenCL
+%{_libdir}/libRusticlOpenCL.so.*
+%{_sysconfdir}/OpenCL/vendors/rusticl.icd
 
 %if 0%{?with_nine}
 %files libd3d
