@@ -415,6 +415,7 @@ popd
 %{_libdir}/libEGL_mesa.so.0*
 %files libEGL-devel
 %dir %{_includedir}/EGL
+%{_includedir}/EGL/eglmesaext.h
 %{_includedir}/EGL/eglext_angle.h
 
 %files libglapi
