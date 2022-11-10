@@ -55,7 +55,7 @@
 
 Name:           mesa
 Summary:        Mesa graphics libraries
-%global ver 22.3.0-rc1
+%global ver 22.3.0-rc2
 Version:        %{lua:ver = string.gsub(rpm.expand("%{ver}"), "-", "~"); print(ver)}
 Release:        1
 License:        MIT
@@ -415,7 +415,7 @@ popd
 %{_libdir}/libEGL_mesa.so.0*
 %files libEGL-devel
 %dir %{_includedir}/EGL
-%{_includedir}/EGL/*.h
+%{_includedir}/EGL/eglext_angle.h
 
 %files libglapi
 %{_libdir}/libglapi.so.0
@@ -479,7 +479,6 @@ popd
 %{_libdir}/dri/kms_swrast_dri.so
 %{_libdir}/dri/swrast_dri.so
 %{_libdir}/dri/virtio_gpu_dri.so
-%{_libdir}/dri/virtio_gpu_drv_video.so
 
 %if 0%{?with_hardware}
 %if 0%{?with_r300}
@@ -567,6 +566,7 @@ popd
 
 %if 0%{?with_va}
 %files va-drivers
+%{_libdir}/dri/virtio_gpu_drv_video.so
 %{_libdir}/dri/nouveau_drv_video.so
 %if 0%{?with_r600}
 %{_libdir}/dri/r600_drv_video.so
@@ -578,8 +578,8 @@ popd
 
 %if 0%{?with_vdpau}
 %files vdpau-drivers
-%{_libdir}/vdpau/libvdpau_nouveau.so.1*
 %{_libdir}/vdpau/libvdpau_virtio_gpu.so.1*
+%{_libdir}/vdpau/libvdpau_nouveau.so.1*
 %if 0%{?with_r300}
 %{_libdir}/vdpau/libvdpau_r300.so.1*
 %endif
