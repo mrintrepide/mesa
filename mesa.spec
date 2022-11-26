@@ -16,7 +16,7 @@
 %global with_i915   1
 %global with_iris   1
 %global with_xa     1
-%global platform_vulkan ,intel
+%global platform_vulkan ,intel,intel_hasvk
 %endif
 
 %ifarch aarch64
@@ -55,7 +55,7 @@
 
 Name:           mesa
 Summary:        Mesa graphics libraries
-%global ver 22.3.0-rc3
+%global ver 22.3.0-rc4
 Version:        %{lua:ver = string.gsub(rpm.expand("%{ver}"), "-", "~"); print(ver)}
 Release:        1
 License:        MIT
@@ -422,8 +422,8 @@ popd
 %{_libdir}/libEGL_mesa.so.0*
 %files libEGL-devel
 %dir %{_includedir}/EGL
-%{_includedir}/EGL/eglmesaext.h
 %{_includedir}/EGL/eglext_angle.h
+%{_includedir}/EGL/eglmesaext.h
 
 %files libglapi
 %{_libdir}/libglapi.so.0
@@ -577,7 +577,6 @@ popd
 
 %if 0%{?with_va}
 %files va-drivers
-%{_libdir}/dri/virtio_gpu_drv_video.so
 %{_libdir}/dri/nouveau_drv_video.so
 %if 0%{?with_r600}
 %{_libdir}/dri/r600_drv_video.so
@@ -585,11 +584,11 @@ popd
 %if 0%{?with_radeonsi}
 %{_libdir}/dri/radeonsi_drv_video.so
 %endif
+%{_libdir}/dri/virtio_gpu_drv_video.so
 %endif
 
 %if 0%{?with_vdpau}
 %files vdpau-drivers
-%{_libdir}/vdpau/libvdpau_virtio_gpu.so.1*
 %{_libdir}/vdpau/libvdpau_nouveau.so.1*
 %if 0%{?with_r300}
 %{_libdir}/vdpau/libvdpau_r300.so.1*
@@ -600,6 +599,7 @@ popd
 %if 0%{?with_radeonsi}
 %{_libdir}/vdpau/libvdpau_radeonsi.so.1*
 %endif
+%{_libdir}/vdpau/libvdpau_virtio_gpu.so.1*
 %endif
 
 %files vulkan-drivers
@@ -614,6 +614,8 @@ popd
 %ifarch %{ix86} x86_64
 %{_libdir}/libvulkan_intel.so
 %{_datadir}/vulkan/icd.d/intel_icd.*.json
+%{_libdir}/libvulkan_intel_hasvk.so
+%{_datadir}/vulkan/icd.d/intel_hasvk_icd.*.json
 %endif
 %ifarch aarch64
 %{_libdir}/libvulkan_broadcom.so
